@@ -42,7 +42,7 @@ except URLerror as e:
 def insert_value(value):
   with my_cnx.cursor() as my_cur:
     my_cur.execute("INSERT INTO FRUIT_LOAD_LIST VALUES (%s)",value)
-    streamlit.text('Thank you for adding  ', value)
+    streamlit.write('Thank you for adding  ', value)
     
   
 
