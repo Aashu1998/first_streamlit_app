@@ -40,23 +40,20 @@ except URLerror as e:
   streamlit.error()
     
 
-streamlit.stop()
+
+def snowflake_querry():
+  with my_cnx.cursor() as my_cur:
+    my_cur.execute("SELECT * FROM FRUIT_LOAD_LIST")
+    return my_cur.fetchall()
+    
+if streamlit.button("Get Fruit List"):
+  my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+  my_cur = snowflake_querry()
+  streamlit.text("FRUIT LOAD LIST CONTAINS :")
+  streamlit.dataframe(my_data_row)
 
 
-
-# write your own comment -what does the next line do? 
-
-# write your own comment - what does this do?
-
-
-
-my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
-my_cur = my_cnx.cursor()
-my_cur.execute("SELECT * FROM FRUIT_LOAD_LIST")
-my_data_row = my_cur.fetchall()
-streamlit.text("FRUIT LOAD LIST CONTAINS :")
-streamlit.dataframe(my_data_row)
 
 fruit_to_add = streamlit.text_input('Which fruit would you like add?','jackfruit')
 streamlit.write('Thank you for adding  ', fruit_to_add)
-my_cur.execute("INSERT INTO FRUIT_LOAD_LIST VALUES (%s)",fruit_to_add)
+streamlit.stop()
