@@ -36,7 +36,7 @@ try:
     streamlit.write('The user entered ', fruit_choice)
     
     
-except URLerror as e:
+except URLError as e:
   streamlit.error()
     
 def insert_value(value):
