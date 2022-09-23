@@ -50,7 +50,7 @@ if streamlit.button("Get Fruit List"):
   my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
   my_cur = snowflake_querry()
   streamlit.text("FRUIT LOAD LIST CONTAINS :")
-  streamlit.dataframe(my_data_row)
+  streamlit.dataframe(my_cur)
 
 
 
