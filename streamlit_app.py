@@ -2,6 +2,7 @@ import streamlit
 import pandas as pd
 import requests
 import snowflake.connector
+import urllib.error
 
 streamlit.title("My Mom's New Healthy Diner")
 streamlit.header("Breakfast favorites")
@@ -36,7 +37,7 @@ try:
     streamlit.write('The user entered ', fruit_choice)
     
     
-except URLError as e:
+except urllib.error.URLError as e:
   streamlit.error()
     
 def insert_value(value):
