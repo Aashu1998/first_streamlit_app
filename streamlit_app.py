@@ -20,22 +20,30 @@ fruits_to_show = my_fruit_list.loc[fruits_selected]
 # Display the table on the page.
 streamlit.dataframe(fruits_to_show)
 streamlit.header("Fruity Vice Advice!")
+try:
+  fruit_choice = streamlit.text_input('What fruit would you like information about?')
+  if not fruit_choice:
+    streamlit.error("Please select fruit of choice")
+  else:
+    fruityvice_response = requests.get("https://fruityvice.com/api/fruit/"+fruit_choice)
+    streamlit.write('The user entered ', fruit_choice)
+    fruityvice_normalized = pd.json_normalize(fruityvice_response.json())
+    fruityvice_normalized = fruityvice_normalized.set_index("name")
 
-fruit_choice = streamlit.text_input('What fruit would you like information about?','Kiwi')
-streamlit.write('The user entered ', fruit_choice)
+    streamlit.dataframe(fruityvice_normalized)
+except URLerror as e:
+  streamlit.error()
+    
 
-fruityvice_response = requests.get("https://fruityvice.com/api/fruit/"+fruit_choice)
 
 
 
 
 
 # write your own comment -what does the next line do? 
-fruityvice_normalized = pd.json_normalize(fruityvice_response.json())
-# write your own comment - what does this do?
-fruityvice_normalized = fruityvice_normalized.set_index("name")
 
-streamlit.dataframe(fruityvice_normalized)
+# write your own comment - what does this do?
+
 
 
 my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
@@ -47,4 +55,4 @@ streamlit.dataframe(my_data_row)
 
 fruit_to_add = streamlit.text_input('Which fruit would you like add?','jackfruit')
 streamlit.write('Thank you for adding  ', fruit_to_add)
-my_cur.execute("INSERT INTO FRUIT_LOAD_LIST VALUES ('from streamlit')")
+my_cur.execute("INSERT INTO FRUIT_LOAD_LIST VALUES (%s)",fruit_to_add)
