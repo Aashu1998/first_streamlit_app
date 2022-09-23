@@ -39,7 +39,12 @@ try:
 except URLerror as e:
   streamlit.error()
     
-
+def insert_value(value):
+  with my_cnx.cursor() as my_cur:
+    my_cur.execute("INSERT INTO FRUIT_LOAD_LIST VALUES (%s)",value)
+    streamlit.text('Thank you for adding  ', value)
+    
+  
 
 def snowflake_querry():
   with my_cnx.cursor() as my_cur:
@@ -54,6 +59,6 @@ if streamlit.button("Get Fruit List"):
 
 
 
-fruit_to_add = streamlit.text_input('Which fruit would you like add?','jackfruit')
-streamlit.write('Thank you for adding  ', fruit_to_add)
-streamlit.stop()
+fruit_to_add = streamlit.text_input('Which fruit would you like add?')
+insert_value(fruit_to_add)
+
